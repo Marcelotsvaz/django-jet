@@ -233,6 +233,13 @@ def get_model_queryset(admin_site, model, request, preserved_filters=None):
         pass
 
     try:
+        search_help_text = model_admin.search_help_text
+        change_list_args.append(search_help_text)
+    except AttributeError:
+        # django version < 4.0
+        pass
+
+    try:
         cl = ChangeList(*change_list_args)
         queryset = cl.get_queryset(request)
     except IncorrectLookupParameters:
